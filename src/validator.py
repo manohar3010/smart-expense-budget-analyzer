@@ -56,7 +56,17 @@ def validate_category(category):
 
 def validate_payment_method(payment_method):
     """Validate payment method."""
-    if payment_method.title() not in VALID_PAYMENT_METHODS:
+
+    valid_methods = {
+        "upi": "UPI",
+        "cash": "Cash",
+        "card": "Card",
+        "bank transfer": "Bank Transfer"
+    }
+
+    key = payment_method.strip().lower()
+
+    if key not in valid_methods:
         return False, (
             "Invalid payment method. Choose from: "
             + ", ".join(VALID_PAYMENT_METHODS)

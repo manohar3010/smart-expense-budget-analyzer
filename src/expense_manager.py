@@ -92,7 +92,10 @@ class ExpenseManager:
             "category": category.title(),
             "amount": f"{float(amount):.2f}",
             "description": description.strip(),
-            "payment_method": payment_method.title()
+            "payment_method": (
+                "UPI" if payment_method.strip().lower() == "upi"
+                        else payment_method.strip().title()
+)
         }
 
         self.expenses.append(expense)
