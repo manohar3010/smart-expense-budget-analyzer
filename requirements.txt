@@ -1,0 +1,2 @@
+# Smart Expense & Budget Analyzer
+# Python standard library is used for the core application.
