@@ -1,1 +1,4 @@
 expense_id,date,category,amount,description,payment_method
+E002,16-08-2026,Food,100.00,Lunch,Cash
+E003,20-08-2026,Education,500.00,Book,Cash
+E004,20-10-2025,Food,11.00,eee,Cash
