@@ -1,0 +1,15 @@
+                User
+                  |
+       ┌──────────┼──────────┐
+       │          │          │
+       ▼          ▼          ▼
+ Manage        Manage      View
+Expenses       Budget     Analytics
+       │          │          │
+       └──────────┼──────────┘
+                  │
+                  ▼
+          Spending Insights
+                  │
+                  ▼
+           Generate Reports

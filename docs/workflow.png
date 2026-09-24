@@ -1,0 +1,25 @@
+Start
+  ↓
+Display Menu
+  ↓
+Select Operation
+  ↓
+┌─────────────────────┐
+│ Expense Management  │
+│ Budget Management   │
+│ Analytics           │
+│ Insights            │
+│ Reports             │
+└──────────┬──────────┘
+           ↓
+      Process Input
+           ↓
+       Validate
+        /      \
+     Valid    Invalid
+       ↓         ↓
+    Process   Error Message
+       ↓
+     Output
+       ↓
+    Main Menu

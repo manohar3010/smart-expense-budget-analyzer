@@ -2,13 +2,13 @@
                BUDGET REPORT
 =======================================================
 
-Monthly Budget: ₹5000.00
-Total Spent: ₹12111.00
-Remaining: ₹-7111.00
-Usage: 242.22%
+Monthly Budget: ₹10000.00
+Total Spent: ₹12511.00
+Remaining: ₹-2511.00
+Usage: 125.11%
 
 Category Budgets:
-Food: Budget ₹3000.00, Spent ₹111.00, Usage 3.70%
+Food: Budget ₹3000.00, Spent ₹511.00, Usage 17.03%
 Transport: Budget ₹1500.00, Spent ₹0.00, Usage 0.00%
 Shopping: Budget ₹2000.00, Spent ₹2500.00, Usage 125.00%
 

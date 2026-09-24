@@ -1,0 +1,31 @@
+smart-expense-budget-analyzer/
+│
+├── main.py
+├── README.md
+├── statement.md
+├── requirements.txt
+├── .gitignore
+│
+├── data/
+│   ├── expenses.csv
+│   └── budget.json
+│
+├── src/
+│   ├── __init__.py
+│   ├── expense_manager.py
+│   ├── budget_manager.py
+│   ├── analytics.py
+│   ├── insights.py
+│   ├── report_generator.py
+│   ├── validator.py
+│   └── utils.py
+│
+├── tests/
+│   ├── __init__.py
+│   ├── test_expense.py
+│   ├── test_budget.py
+│   └── test_analytics.py
+│
+├── reports/
+│
+└── docs/
