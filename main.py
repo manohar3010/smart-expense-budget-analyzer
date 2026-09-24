@@ -1,25 +1,40 @@
 from src.expense_manager import ExpenseManager
-
+from src.budget_manager import BudgetManager
+from src.analytics import ExpenseAnalytics
 
 expense_manager = ExpenseManager()
-
+budget_manager = BudgetManager()
+analytics = ExpenseAnalytics(expense_manager.view_expenses())
 
 def display_menu():
-    print("\n" + "=" * 50)
-    print("       SMART EXPENSE & BUDGET ANALYZER")
-    print("=" * 50)
+    print("\n" + "=" * 55)
+    print("        SMART EXPENSE & BUDGET ANALYZER")
+    print("=" * 55)
+
+    print("\nEXPENSE MANAGEMENT")
     print("1. Add Expense")
     print("2. View Expenses")
     print("3. Update Expense")
     print("4. Delete Expense")
     print("5. Search Expenses")
     print("6. Filter by Category")
-    print("7. Budget Management")
-    print("8. Expense Analytics")
-    print("9. Spending Insights")
-    print("10. Generate Report")
-    print("11. Exit")
-    print("=" * 50)
+
+    print("\nBUDGET MANAGEMENT")
+    print("7. Set Monthly Budget")
+    print("8. Set Category Budget")
+    print("9. View Budget")
+    print("10. View Budget Status")
+
+    print("\nANALYTICS")
+    print("11. View Expense Analytics")
+
+    print("\nOTHER")
+    print("12. Spending Insights")
+    print("13. Generate Report")
+    print("14. Exit")
+
+    print("=" * 55)
+
 
 
 def add_expense():
@@ -206,6 +221,142 @@ def filter_expenses():
             f"{expense['description']}"
         )
 
+def set_monthly_budget():
+    print("\n--- SET MONTHLY BUDGET ---")
+
+    amount = input("Enter monthly budget: ₹").strip()
+
+    success, message = budget_manager.set_monthly_budget(amount)
+
+    if success:
+        print(f"✓ {message}")
+    else:
+        print(f"✗ {message}")
+
+def set_category_budget():
+    print("\n--- SET CATEGORY BUDGET ---")
+
+    category = input("Enter category: ").strip()
+    amount = input("Enter category budget: ₹").strip()
+
+    success, message = budget_manager.set_category_budget(
+        category,
+        amount
+    )
+
+    if success:
+        print(f"✓ {message}")
+    else:
+        print(f"✗ {message}")
+
+def view_budget():
+    print("\n--- BUDGET INFORMATION ---")
+
+    monthly_budget = budget_manager.get_monthly_budget()
+
+    category_budgets = budget_manager.get_category_budgets()
+
+    print(f"\nMonthly Budget: ₹{monthly_budget:.2f}")
+
+    print("\nCategory Budgets:")
+
+    if not category_budgets:
+        print("No category budgets set.")
+        return
+
+    for category, amount in category_budgets.items():
+        print(f"{category}: ₹{amount:.2f}")
+
+def view_budget_status():
+    print("\n--- BUDGET STATUS ---")
+
+    expenses = expense_manager.view_expenses()
+
+    analytics = ExpenseAnalytics(expenses)
+
+    total_spent = analytics.calculate_total_expenses()
+
+    monthly_budget = budget_manager.get_monthly_budget()
+
+    if monthly_budget <= 0:
+        print("No monthly budget has been set.")
+        return
+
+    remaining = monthly_budget - total_spent
+
+    usage = analytics.calculate_budget_usage(
+        monthly_budget
+    )
+
+    print(f"\nMonthly Budget : ₹{monthly_budget:.2f}")
+    print(f"Total Spent    : ₹{total_spent:.2f}")
+    print(f"Remaining      : ₹{remaining:.2f}")
+    print(f"Budget Used    : {usage:.2f}%")
+
+    if remaining < 0:
+        print("\n⚠ Budget exceeded!")
+
+    elif usage >= 80:
+        print("\n⚠ You have used more than 80% of your budget.")
+
+    else:
+        print("\n✓ You are within your budget.")
+
+def view_analytics():
+    print("\n--- EXPENSE ANALYTICS ---")
+
+    expenses = expense_manager.view_expenses()
+
+    if not expenses:
+        print("No expenses available for analysis.")
+        return
+
+    analytics = ExpenseAnalytics(expenses)
+
+    total = analytics.calculate_total_expenses()
+
+    category_totals = analytics.calculate_category_expenses()
+
+    monthly_totals = analytics.calculate_monthly_expenses()
+
+    average_daily = analytics.calculate_average_daily_expense()
+
+    highest = analytics.find_highest_expense()
+
+    top_category = analytics.find_top_category()
+
+    print(f"\nTotal Expenses: ₹{total:.2f}")
+
+    print("\nCategory-wise Expenses:")
+
+    for category, amount in category_totals.items():
+        print(f"{category}: ₹{amount:.2f}")
+
+    print("\nMonthly Expenses:")
+
+    for month, amount in monthly_totals.items():
+        print(f"{month}: ₹{amount:.2f}")
+
+    print(
+        f"\nAverage Daily Expense: "
+        f"₹{average_daily:.2f}"
+    )
+
+    if highest:
+        print(
+            "\nHighest Individual Expense:"
+        )
+
+        print(
+            f"{highest['description']} - "
+            f"₹{float(highest['amount']):.2f}"
+        )
+
+    if top_category:
+        print(
+            f"\nHighest Spending Category: "
+            f"{top_category}"
+        )
 
 def main():
 
@@ -216,7 +367,6 @@ def main():
         display_menu()
 
         choice = input("Enter your choice: ").strip()
-
         if choice == "1":
             add_expense()
 
@@ -236,24 +386,36 @@ def main():
             filter_expenses()
 
         elif choice == "7":
-            print("\nBudget Management will be added on Day 3.")
+            set_monthly_budget()
 
         elif choice == "8":
-            print("\nExpense Analytics will be added on Day 3.")
+            set_category_budget()
 
         elif choice == "9":
-            print("\nSpending Insights will be added on Day 4.")
+            view_budget()
 
         elif choice == "10":
-            print("\nReport Generation will be added on Day 4.")
+            view_budget_status()
 
         elif choice == "11":
-            print("\nThank you for using Smart Expense & Budget Analyzer!")
+            view_analytics()
+
+        elif choice == "12":
+            print("\nSpending Insights will be added on Day 4.")
+
+        elif choice == "13":
+            print("\nReport Generation will be added on Day 4.")
+
+        elif choice == "14":
+            print(
+                "\nThank you for using "
+                "Smart Expense & Budget Analyzer!"
+            )
             break
-
         else:
-            print("\n✗ Invalid choice. Please select 1-11.")
-
+            print("\n Invalid choice. Please select 1-14.")
+            
+        
 
 if __name__ == "__main__":
     main()
