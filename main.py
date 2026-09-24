@@ -1,6 +1,8 @@
 from src.expense_manager import ExpenseManager
 from src.budget_manager import BudgetManager
 from src.analytics import ExpenseAnalytics
+from src.insights import SpendingInsights
+from src.report_generator import ReportGenerator
 
 expense_manager = ExpenseManager()
 budget_manager = BudgetManager()
@@ -357,10 +359,155 @@ def view_analytics():
             f"\nHighest Spending Category: "
             f"{top_category}"
         )
+def view_spending_insights():
+    print("\n--- SPENDING INSIGHTS ---")
+
+    expenses = expense_manager.view_expenses()
+
+    if not expenses:
+        print("No expenses available for analysis.")
+        return
+
+    analytics = ExpenseAnalytics(expenses)
+
+    insights_generator = SpendingInsights(
+        analytics,
+        budget_manager
+    )
+
+    insights = insights_generator.generate_insights()
+
+    print()
+
+    for index, insight in enumerate(insights, start=1):
+
+        print(f"{index}. {insight}")
+
+def generate_reports():
+    print("\n--- REPORT GENERATION ---")
+
+    expenses = expense_manager.view_expenses()
+
+    if not expenses:
+        print("No expenses available for reports.")
+        return
+
+    analytics = ExpenseAnalytics(expenses)
+
+    report_generator = ReportGenerator(
+        analytics,
+        budget_manager
+    )
+
+    while True:
+
+        print("\n1. Monthly Report")
+        print("2. Category Report")
+        print("3. Budget Report")
+        print("4. Export Category CSV")
+        print("5. Back")
+
+        choice = input(
+            "\nEnter your choice: "
+        ).strip()
+
+        if choice == "1":
+
+            report = (
+                report_generator
+                .generate_monthly_report()
+            )
+
+            print("\n" + report)
+
+            path = report_generator.save_report(
+                report,
+                "monthly_report.txt"
+            )
+
+            print(
+                f"\n✓ Report saved to {path}"
+            )
+
+        elif choice == "2":
+
+            report = (
+                report_generator
+                .generate_category_report()
+            )
+
+            print("\n" + report)
+
+            path = report_generator.save_report(
+                report,
+                "category_report.txt"
+            )
+
+            print(
+                f"\n✓ Report saved to {path}"
+            )
+
+        elif choice == "3":
+
+            report = (
+                report_generator
+                .generate_budget_report()
+            )
+
+            print("\n" + report)
+
+            path = report_generator.save_report(
+                report,
+                "budget_report.txt"
+            )
+
+            print(
+                f"\n✓ Report saved to {path}"
+            )
+
+        elif choice == "4":
+
+            path = (
+                report_generator
+                .export_category_csv()
+            )
+
+            print(
+                f"\n✓ CSV report saved to {path}"
+            )
+
+        elif choice == "5":
+
+            break
+
+        else:
+
+            print(
+                "\n✗ Invalid choice."
+            )
 
 def main():
 
     print("\nWelcome to Smart Expense & Budget Analyzer!")
+
+    def view_spending_insights():
+        analytics = ExpenseAnalytics(expense_manager.expenses)
+
+        insights = SpendingInsights(
+            analytics,
+            budget_manager
+        )
+
+        print("\n" + "=" * 55)
+        print("                SPENDING INSIGHTS")
+        print("=" * 55)
+
+        results = insights.generate_insights()
+
+        for insight in results:
+            print(f"- {insight}")
+
+        print("=" * 55)
 
     while True:
 
@@ -401,10 +548,10 @@ def main():
             view_analytics()
 
         elif choice == "12":
-            print("\nSpending Insights will be added on Day 4.")
+            view_spending_insights()
 
         elif choice == "13":
-            print("\nReport Generation will be added on Day 4.")
+            generate_reports()
 
         elif choice == "14":
             print(

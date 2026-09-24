@@ -104,3 +104,102 @@ class ExpenseAnalytics:
         total = self.calculate_total_expenses()
 
         return (total / monthly_budget) * 100
+    
+    def calculate_category_percentages(self):
+        """Calculate the percentage contribution of each category."""
+
+        total = self.calculate_total_expenses()
+
+        if total == 0:
+            return {}
+
+        category_totals = self.calculate_category_expenses()
+
+        percentages = {}
+
+        for category, amount in category_totals.items():
+            percentages[category] = (amount / total) * 100
+
+        return percentages
+    
+    def find_large_expenses(self, threshold=1000):
+        """Find expenses above a specified amount."""
+
+        large_expenses = []
+
+        for expense in self.expenses:
+
+            if float(expense["amount"]) >= threshold:
+                large_expenses.append(expense)
+
+        return large_expenses
+
+    def compare_months(self, current_month, previous_month):
+        """Compare spending between two months."""
+
+        monthly_totals = self.calculate_monthly_expenses()
+
+        current_amount = monthly_totals.get(
+            current_month,
+            0
+        )
+
+        previous_amount = monthly_totals.get(
+            previous_month,
+            0
+        )
+
+        if previous_amount == 0:
+            return {
+                "current": current_amount,
+                "previous": previous_amount,
+                "difference": current_amount,
+                "percentage_change": 0
+            }
+
+        difference = current_amount - previous_amount
+
+        percentage_change = (
+            difference / previous_amount
+        ) * 100
+
+        return {
+            "current": current_amount,
+            "previous": previous_amount,
+            "difference": difference,
+            "percentage_change": percentage_change
+        }
+    def get_category_budget_status(
+        self,
+        category_budgets):
+        """Compare category spending with category budgets."""
+
+        category_totals = self.calculate_category_expenses()
+
+        status = {}
+
+        for category, budget in category_budgets.items():
+
+            spent = category_totals.get(
+                category,
+                0
+            )
+
+            remaining = budget - spent
+
+            if budget > 0:
+                usage = (spent / budget) * 100
+            else:
+                usage = 0
+
+            status[category] = {
+                "budget": budget,
+                "spent": spent,
+                "remaining": remaining,
+                "usage": usage
+            }
+
+        return status
+    
+
+
